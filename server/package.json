@@ -1,1 +1,1 @@
-
+{ "name": "island-echoes-relay", "private": true, "type": "module", "scripts": { "start": "node relay.js" }, "dependencies": { "ws": "^8.18.0" } }
