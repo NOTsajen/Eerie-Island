@@ -16,7 +16,7 @@ export default class InteriorScene extends Phaser.Scene {
   init(d) { this.main = d.main; this.key = d.key; this.lv = d.lv; }
 
   create() {
-    const sc = this.main, cam = this.cameras.main;
+    const sc = this.main, cam = this.cameras.main; cam.setZoom(this.scale.width / 480).centerOn(240, 135);
     this.items = sc.interiors[this.key] || (sc.interiors[this.key] = []);
     cam.setBackgroundColor(0x1a1428);
     const g = this.add.graphics();

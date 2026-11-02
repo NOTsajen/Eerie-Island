@@ -163,7 +163,7 @@ export default class MainGameScene extends Phaser.Scene {
     this.dust = this.add.particles(0, 0, 'px', { lifespan: 350, speed: { min: 6, max: 22 }, scale: { start: 2, end: 0 }, tint: 0xcdb98a, emitting: false }).setDepth(990);
 
     // Night darkness + seasonal color grade
-    this.tintRect = this.add.rectangle(0, 0, 480, 270, 0xffffff, 0.12).setOrigin(0).setScrollFactor(0).setDepth(999);
+    this.tintRect = this.add.rectangle(0, 0, 900, 1400, 0xffffff, 0.12).setOrigin(0).setScrollFactor(0).setDepth(999);
     this.dark = this.add.renderTexture(0, 0, 480, 270).setOrigin(0).setScrollFactor(0).setDepth(1000);
     this.lightImg = this.make.image({ x: 0, y: 0, key: 'light', add: false });
 
@@ -176,9 +176,9 @@ export default class MainGameScene extends Phaser.Scene {
     this.creatures = new CreatureManager(this);
     this.ex = new Extras(this);
 
-    this.rain = this.add.particles(0, 0, 'px', { x: { min: 0, max: 520 }, y: -6, lifespan: 700, speedY: { min: 220, max: 280 }, speedX: -40, scaleY: 3, scaleX: 0.6, tint: 0x8ab4ff, alpha: 0.6, frequency: 30, emitting: false }).setScrollFactor(0).setDepth(998);
-    this.snow = this.add.particles(0, 0, 'px', { x: { min: 0, max: 480 }, y: -6, lifespan: 5000, speedY: { min: 25, max: 50 }, speedX: { min: -15, max: 15 }, tint: 0xffffff, frequency: 22, emitting: false }).setScrollFactor(0).setDepth(998);
-    this.fog = this.add.rectangle(0, 0, 480, 270, 0xdfe6ee, 0).setOrigin(0).setScrollFactor(0).setDepth(998);
+    this.rain = this.add.particles(0, 0, 'px', { x: { min: 0, max: 600 }, y: -6, lifespan: 700, speedY: { min: 220, max: 280 }, speedX: -40, scaleY: 3, scaleX: 0.6, tint: 0x8ab4ff, alpha: 0.6, frequency: 30, emitting: false }).setScrollFactor(0).setDepth(998);
+    this.snow = this.add.particles(0, 0, 'px', { x: { min: 0, max: 600 }, y: -6, lifespan: 5000, speedY: { min: 25, max: 50 }, speedX: { min: -15, max: 15 }, tint: 0xffffff, frequency: 22, emitting: false }).setScrollFactor(0).setDepth(998);
+    this.fog = this.add.rectangle(0, 0, 900, 1400, 0xdfe6ee, 0).setOrigin(0).setScrollFactor(0).setDepth(998);
     this.time.addEvent({ delay: 45000, loop: true, callback: () => this.rollWeather() });
 
     window.addEventListener('focusin', e => { if (e.target.tagName === 'INPUT') this.input.keyboard.enabled = false; });
