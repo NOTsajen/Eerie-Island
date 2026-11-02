@@ -7,7 +7,7 @@ export default class UIManager {
   constructor() {
     this.hud = document.getElementById('hud');
     this.hud.innerHTML = '<div id="clock"></div><div id="gear"></div>'; const iv = document.createElement('div'); iv.id = 'inv'; document.body.appendChild(iv);
-    document.getElementById('vbar').innerHTML = BARS.map(([k, c, ic]) => `<div class="vs" id="s-${k}" title="${k}"><div class="vt"><b id="b-${k}" style="background:linear-gradient(90deg,#fff6 0 25%,${c} 25% 75%,#0004 75%)"></b></div><img src="${icon(ic)}" alt="${k}"></div>`).join('');
+    document.getElementById('vbar').innerHTML = BARS.map(([k, c, ic]) => `<div class="vs" id="s-${k}" title="${k}"><img src="${icon(ic)}" alt="${k}"><div class="vt"><b id="b-${k}" style="background:linear-gradient(#fff6 0 25%,${c} 25% 75%,#0004 75%)"></b></div></div>`).join('');
     this.bars = Object.fromEntries(BARS.map(([k]) => [k, document.getElementById('b-' + k)]));
     this.clock = document.getElementById('clock'); this.gearEl = document.getElementById('gear'); this.sel = 0; this.off = 0; this.items = []; window.addEventListener('wheel', e => { if (e.target.closest && e.target.closest('#modal.show')) return; this.sel += e.deltaY > 0 ? 1 : -1; this._inv = null; }, { passive: true });
     this.inv = document.getElementById('inv'); this.inv.addEventListener('pointerdown', e => { const b = e.target.closest('[data-slot]'); if (b) { this.sel = +b.dataset.slot; this._inv = null; } });
@@ -17,7 +17,7 @@ export default class UIManager {
   }
 
   update(sv, { day, h, season, mourning, gear }) {
-    for (const [k] of BARS) { const v = sv.stats[k]; this.bars[k].style.height = v.toFixed(0) + '%'; document.getElementById('s-' + k).classList.toggle('low', v < 25); }
+    for (const [k] of BARS) { const v = sv.stats[k]; this.bars[k].style.width = v.toFixed(0) + '%'; document.getElementById('s-' + k).classList.toggle('low', v < 25); }
     const H = Math.floor(h), mn = Math.floor((h % 1) * 60 / 10) * 10, ap = H >= 12 && H < 24 ? 'pm' : 'am', h12 = H % 12 || 12;
     const WD = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], dis = ((day - 1) % 10) + 1;
     this.clock.innerHTML = `${WD[(day - 1) % 7]}. ${dis} · ${season}<small>${h12}:${String(mn).padStart(2, '0')} ${ap} · ${h >= 18 || h < 6 ? '🌙 Night' : '☀ Day'} · Day ${day}${mourning ? ' · Mourning' : ''}</small>`;

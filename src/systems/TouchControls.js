@@ -9,9 +9,7 @@ export default class TouchControls {
   constructor(sc) {
     if (!window.matchMedia('(pointer: coarse)').matches) return;
     const root = document.createElement('div'); root.id = 'touch';
-    root.innerHTML = '<div id="joy"><i id="knob"></i></div><div id="tpal"></div><div id="tbtns"><button data-k="SPACE" class="big">ACT</button>' +
-      PAD.map(([k, l]) => `<button data-k="${k}">${l}</button>`).join('') +
-      '<button data-m="build">BUILD</button><button data-m="craft">CRAFT</button><button data-e="Enter">CHAT</button><button data-e="m">ROOM</button><button data-e="p">PING</button></div>';
+    root.innerHTML = '<div id="joy"><i id="knob"></i></div><div id="tpal"></div><div id="tact"><button data-m="menu" class="mnu">&#9776;</button><button data-k="SPACE" class="act">ACT</button></div>';
     document.body.appendChild(root);
     const pal = root.querySelector('#tpal');
     // Inside a house the Interior scene owns the keys; otherwise use the main scene's.
@@ -22,8 +20,15 @@ export default class TouchControls {
       const b = e.target.closest('button'); if (!b) return;
       e.preventDefault(); sc.audio.start();
       if (b.dataset.k) { press(b.dataset.k); if (b.parentNode === pal) pal.style.display = 'none'; }
+      else if (b.dataset.e && b.parentNode === pal) { window.dispatchEvent(new KeyboardEvent('keydown', { key: b.dataset.e })); pal.style.display = 'none'; }
       else if (b.dataset.e) window.dispatchEvent(new KeyboardEvent('keydown', { key: b.dataset.e }));
+      else if (b.dataset.m === 'menu') {
+        if (pal.style.display === 'flex' && pal.dataset.cur === 'menu') { pal.style.display = 'none'; return; }
+        const ex = [['m:build', 'BUILD'], ['m:craft', 'CRAFT'], ...PAD.map(([k, l]) => ['k:' + k, l]), ['e:Enter', 'CHAT'], ['e:m', 'ROOM'], ['e:p', 'PING']];
+        pal.innerHTML = ex.map(([k, l]) => { const [t, v] = k.split(':'); return `<button data-${t}="${v}">${l}</button>`; }).join(''); pal.dataset.cur = 'menu'; pal.style.display = 'flex';
+      }
       else if (b.dataset.m) {
+        pal.dataset.cur = 'sub';
         const list = b.dataset.m === 'build' ? BUILD.map((l, i) => [NUM[i], l]) : CRAFT;
         pal.innerHTML = list.map(([k, l]) => `<button data-k="${k}">${l}</button>`).join('');
         pal.style.display = 'flex';
