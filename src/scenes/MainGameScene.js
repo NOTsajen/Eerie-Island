@@ -163,7 +163,7 @@ export default class MainGameScene extends Phaser.Scene {
     this.dust = this.add.particles(0, 0, 'px', { lifespan: 350, speed: { min: 6, max: 22 }, scale: { start: 2, end: 0 }, tint: 0xcdb98a, emitting: false }).setDepth(990);
 
     // Night darkness + seasonal color grade
-    this.tintRect = this.add.rectangle(0, 0, 900, 1400, 0xffffff, 0.12).setOrigin(0).setScrollFactor(0).setDepth(999);
+    this.tintRect = this.add.rectangle(0, 0, 900, 1400, 0xffffff, 0).setOrigin(0).setScrollFactor(0).setDepth(999);
     this.dark = this.add.renderTexture(0, 0, 480, 270).setOrigin(0).setScrollFactor(0).setDepth(1000);
     this.lightImg = this.make.image({ x: 0, y: 0, key: 'light', add: false });
 
@@ -191,9 +191,9 @@ export default class MainGameScene extends Phaser.Scene {
     if (this.renderer.type === Phaser.WEBGL) {
       try {
         const fx = this.cameras.main.postFX;
-        fx.addBloom(0xffffff, 1, 1, 1.2, 0.8); fx.addVignette(0.5, 0.5, 0.9, 0.35);
+        fx.addBloom(0xffffff, 1, 1, 1.2, 0.3); fx.addVignette(0.5, 0.5, 0.9, 0.35);
         const cm = fx.addColorMatrix(); cm.saturate(0.7); cm.contrast(0.2);
-        try { fx.addGradient(0xfff0c0, 0x7a6aff, 0.06, 0, 0, 0, 1); } catch (e) { /* optional warm-to-cool grade */ }
+        try { fx.addGradient(0xfff0c0, 0x7a6aff, 0.02, 0, 0, 0, 1); } catch (e) { /* optional warm-to-cool grade */ }
       } catch (e) { /* effects unavailable */ }
     }
     this.openCreator();
@@ -385,7 +385,7 @@ export default class MainGameScene extends Phaser.Scene {
     if (rainy) { this.rain.setFrequency(w === 'monsoon' ? 8 : 30); this.rain.start(); } else this.rain.stop();
     if (w === 'snow') this.snow.start(); else this.snow.stop();
     this.fog.setFillStyle(w === 'monsoon' ? 0x2a5f9e : 0xdfe6ee, 0);
-    this.tweens.add({ targets: this.fog, fillAlpha: w === 'fog' ? 0.35 : w === 'monsoon' ? 0.2 : 0, duration: 3000 });
+    this.tweens.add({ targets: this.fog, fillAlpha: w === 'fog' ? 0.15 : w === 'monsoon' ? 0.1 : 0, duration: 3000 });
     this.audio.setRain(rainy);
     this.ui.toast(`Weather: ${w}`);
   }
@@ -541,7 +541,7 @@ export default class MainGameScene extends Phaser.Scene {
     if (this.gameMin >= 1440) { this.gameMin -= 1440; this.day++; this.ui.toast(`Day ${this.day}`); }
     const h = this.gameMin / 60, dark = this.darkness(h);
     const sIdx = Math.floor((this.day - 1) / 10) % 4;
-    if (sIdx !== this.seasonIdx) { this.seasonIdx = sIdx; this.tintRect.setFillStyle(SEASON_TINT[sIdx], 0.06); this.ui.toast(`${SEASONS[sIdx]} begins`); this.grassTS.setTexture('grass_' + sIdx); this.dirtTS.forEach(t => t.setTexture('dirt_' + sIdx)); this.decor.forEach(d => d.setTexture('dec_' + sIdx)); this.applySeasonTints(sIdx); if (sIdx === 3) this.ui.toast('The river froze - you can walk across it!'); this.cliffTop.forEach(c => c.setTexture('grass_' + sIdx)); this.hills.forEach(h => h.setFillStyle([0x78d85a, 0x5cc048, 0xbdb248, 0xf2f8ff][sIdx])); if (this.weather !== undefined) this.setWeather(sIdx === 3 ? 'snow' : 'sunny'); this.nodes.children.iterate(n => { if (n && n.texture.key.startsWith('tree_')) n.setTexture('tree_' + sIdx); }); }
+    if (sIdx !== this.seasonIdx) { this.seasonIdx = sIdx; this.tintRect.setFillStyle(SEASON_TINT[sIdx], 0.02); this.ui.toast(`${SEASONS[sIdx]} begins`); this.grassTS.setTexture('grass_' + sIdx); this.dirtTS.forEach(t => t.setTexture('dirt_' + sIdx)); this.decor.forEach(d => d.setTexture('dec_' + sIdx)); this.applySeasonTints(sIdx); if (sIdx === 3) this.ui.toast('The river froze - you can walk across it!'); this.cliffTop.forEach(c => c.setTexture('grass_' + sIdx)); this.hills.forEach(h => h.setFillStyle([0x78d85a, 0x5cc048, 0xbdb248, 0xf2f8ff][sIdx])); if (this.weather !== undefined) this.setWeather(sIdx === 3 ? 'snow' : 'sunny'); this.nodes.children.iterate(n => { if (n && n.texture.key.startsWith('tree_')) n.setTexture('tree_' + sIdx); }); }
     this.audio.setNight(dark > 0.5);
     this.riverTS.forEach(r => { r.tilePositionY = -t / 60; }); this.sea.tilePositionX = t / 90; this.sea.tilePositionY = Math.sin(t / 1500) * 6;
 
