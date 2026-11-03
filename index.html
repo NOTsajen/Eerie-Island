@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Gaps</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="game"></canvas>
+<div id="hud">
+  <div id="bars"></div>
+  <div id="clock"></div>
+  <button id="craftBtn">Craft</button>
+  <button id="newBtn">New</button>
+  <div id="hotbar"></div>
+  <button id="actionBtn">Hit</button>
+  <button id="sprintBtn">Sprint</button>
+  <div id="craftPanel" hidden></div>
+  <div id="dead" hidden><div><span id="deadMsg">You died</span><br><button id="restart">Restart</button></div></div>
+</div>
+<div id="joy" hidden><div id="knob"></div></div>
+<script src="game.js"></script>
+</body>
+</html>
