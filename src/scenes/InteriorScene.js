@@ -16,7 +16,7 @@ export default class InteriorScene extends Phaser.Scene {
   init(d) { this.main = d.main; this.key = d.key; this.lv = d.lv; }
 
   create() {
-    const sc = this.main, cam = this.cameras.main; cam.setZoom(this.scale.width / 480).centerOn(240, 135);
+    const sc = this.main, cam = this.cameras.main; cam.setZoom(Math.min(this.scale.width / 480, this.scale.height / 270)).centerOn(240, 135);
     this.items = sc.interiors[this.key] || (sc.interiors[this.key] = []);
     cam.setBackgroundColor(0x1a1428);
     const g = this.add.graphics();
@@ -41,7 +41,7 @@ export default class InteriorScene extends Phaser.Scene {
     this.keys = this.input.keyboard.addKeys('A,D,W,S,LEFT,RIGHT,UP,DOWN,SPACE,Q,X,C,H,ESC');
     this.hint = this.add.text(4, 2, 'A/D move · W/S stairs (right side) · Q furniture · Space use · X remove · C recolor · H/Esc leave', { fontFamily: 'monospace', fontSize: '7px', color: '#ffe9a8', stroke: '#000', strokeThickness: 2 }).setDepth(10);
     this.score = 0;
-    if (this.renderer.type === Phaser.WEBGL) { try { const fx = cam.postFX; fx.addBloom(0xffffff, 1, 1, 1, 0.6); fx.addVignette(0.5, 0.5, 0.92, 0.25); fx.addColorMatrix().saturate(0.35); } catch (e) { /* ok */ } }
+    if (this.renderer.type === Phaser.WEBGL) { try { const fx = cam.postFX; fx.addVignette(0.5, 0.5, 0.92, 0.25); fx.addColorMatrix().saturate(0.35); } catch (e) { /* ok */ } }
     this.mt = 0;
   }
 

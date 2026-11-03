@@ -149,7 +149,8 @@ export default class CaveScene extends Phaser.Scene {
     if (d >= 3) { const r = Phaser.Utils.Array.GetRandom(rooms.slice(1, -1)); const p = free(r); this.obj('vault', p.x, p.y); }
     if (d === MAXD) { const r = last; this.mob('guardian', { x: r.cx * TS + 8, y: r.cy * TS + 8 }); this.obj('vault', r.x * TS + 24, r.y * TS + 24, { boss: true }); this.obj('vault', (r.x + r.w - 2) * TS, r.y * TS + 24, { boss: true }); }
     // lighting
-    this.dark = this.add.renderTexture(0, 0, 480, 270).setOrigin(0).setScrollFactor(0).setDepth(1000);
+    this.dark = this.add.renderTexture(0, 0, this.scale.width, this.scale.height).setOrigin(0).setScrollFactor(0).setDepth(1000);
+    this.scale.on('resize', () => this.dark.resize(this.scale.width, this.scale.height));
     this.lightImg = this.make.image({ x: 0, y: 0, key: 'light', add: false });
     this.keys = this.input.keyboard.addKeys('A,D,W,S,LEFT,RIGHT,UP,DOWN,SPACE,H,ESC,E,Q');
     cam.setBounds(0, 0, W * TS, H * TS).startFollow(this.pl, true, 0.12, 0.12).setRoundPixels(true);
