@@ -4,13 +4,13 @@ import MainGameScene from './scenes/MainGameScene.js';
 import InteriorScene from './scenes/InteriorScene.js';
 import CaveScene from './scenes/CaveScene.js';
 
-const W = 300, hFor = () => Math.max(360, Math.min(720, Math.round(W * (window.innerHeight || 1) / (window.innerWidth || 1))));
+const H = 270, wFor = () => Math.max(400, Math.min(640, Math.round(H * (window.innerWidth || 1) / (window.innerHeight || 1))));
 
 const game = new Phaser.Game({
   type: Phaser.AUTO,
   parent: 'game',
-  width: W,
-  height: hFor(),
+  width: wFor(),
+  height: H,
   pixelArt: true,
   antialias: false,
   roundPixels: true,
@@ -22,13 +22,13 @@ const game = new Phaser.Game({
 });
 
 // keep the canvas filling the screen when the browser bars hide/show or fullscreen toggles
-let rt; const refit = () => { clearTimeout(rt); rt = setTimeout(() => game.scale.setGameSize(W, hFor()), 120); };
+let rt; const refit = () => { clearTimeout(rt); rt = setTimeout(() => game.scale.setGameSize(wFor(), H), 120); };
 window.addEventListener('resize', refit); document.addEventListener('fullscreenchange', refit);
 
-// first touch -> fullscreen + portrait lock
+// first touch -> fullscreen + landscape lock
 const goFull = () => {
   const el = document.documentElement;
   (el.requestFullscreen ? el.requestFullscreen({ navigationUI: 'hide' }) : Promise.resolve()).catch(() => {})
-    .then(() => screen.orientation && screen.orientation.lock && screen.orientation.lock('portrait')).catch(() => {});
+    .then(() => screen.orientation && screen.orientation.lock && screen.orientation.lock('landscape')).catch(() => {});
 };
 window.addEventListener('pointerdown', goFull, { once: true });
